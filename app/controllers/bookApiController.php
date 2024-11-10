@@ -17,12 +17,15 @@ class BookApiController {
         if(isset($req->query->orderBy))
             $orderBy = $req->query->orderBy;
 
-        $Autor = null;
-        if(isset($req->query->Autor)) {
-            $Autor = $req->query->Autor;
-        }
+        $sort = 'asc';
+        if (isset($req->query->sort)) 
+            $sort = $req->query->sort;
 
-        $books = $this->model->getBooks($Autor, $orderBy);
+        $autor = null;
+        if(isset($req->query->Autor))
+            $autor = $req->query->Autor;
+
+        $books = $this->model->getBooks($orderBy, $sort, $autor);
         
         return $this->view->response($books);
     }

@@ -11,6 +11,5 @@
     $router->addRoute('libros'  ,     'POST',    'BookApiController',   'create');
     $router->addRoute('libros/:id'  , 'PUT',     'BookApiController',   'update');
     
-    $router->addRoute('usuarios/token', 'GET',     'UserApiController',   'getToken');
 
     $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
