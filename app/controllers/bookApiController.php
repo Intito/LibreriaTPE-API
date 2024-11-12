@@ -17,7 +17,7 @@ class BookApiController {
         if(isset($req->query->orderBy))
             $orderBy = $req->query->orderBy;
 
-        $sort = 'asc';
+        $sort = null;
         if (isset($req->query->sort)) 
             $sort = $req->query->sort;
 
@@ -25,7 +25,17 @@ class BookApiController {
         if(isset($req->query->Autor))
             $autor = $req->query->Autor;
 
-        $books = $this->model->getBooks($orderBy, $sort, $autor);
+        $limit = null;
+        if(isset($req->query->limit))
+            $limit = $req->query->limit; 
+        
+        $page = 1;
+        if(isset($req->query->page))
+            $page = $req->query->page;
+
+        $offset = ($page - 1) * $limit;
+
+        $books = $this->model->getBooks($orderBy, $sort, $autor, $limit, $offset);
         
         return $this->view->response($books);
     }
@@ -37,7 +47,7 @@ class BookApiController {
         $book = $this->model->getBook($id);
 
         if(!$book) {
-            return $this->view->response("El libro con el id=$id no existe", 404);
+            return $this->view->response("El libro con el id = $id no existe", 404);
         }
 
         return $this->view->response($book);
@@ -50,11 +60,11 @@ class BookApiController {
         $book = $this->model->getBook($id);
 
         if (!$book) {
-            return $this->view->response("El libro con el id=$id no existe", 404);
+            return $this->view->response("El libro con el id = $id no existe", 404);
         }
 
         $this->model->eraseBook($id);
-        $this->view->response("El libro con el id=$id se elimino con exito");
+        $this->view->response("El libro con el id = $id se elimino con exito");
     }
 
 
@@ -85,7 +95,7 @@ class BookApiController {
 
         $book = $this->model->getBook($id);
         if (!$book) {
-            return $this->view->response("El libro con el id=$id no existe", 404);
+            return $this->view->response("El libro con el id = $id no existe", 404);
         }
 
         if (empty($req->body->title) || empty($req->body->gender) || empty($req->body->pages) || empty($req->body->publisher) || empty($req->body->author)) {

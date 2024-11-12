@@ -12,7 +12,7 @@ class bookModel extends model{
         return $books;
     }
  
-    public function getBooks($orderBy = false, $sort = 'asc', $autor = null, ) {
+    public function getBooks($orderBy = false, $sort = null, $autor = null, $limit = null, $offset = 0) {
         $sql = 'SELECT libros.*, autores.Nombre AS AutorNombre FROM libros JOIN autores ON libros.Autor = autores.id';
 
         if($autor != null) {
@@ -37,10 +37,13 @@ class bookModel extends model{
                     $sql .= ' ORDER BY Editorial';
                     break;
             }
+            if ($sort != null) {
+                $sql .= " $sort";
+            }
         }
 
-        if ($sort == 'asc' || $sort == 'desc') {
-            $sql .= " $sort";
+        if ($limit != null) {
+            $sql .= " LIMIT $limit OFFSET $offset";
         }
 
         $query = $this->db->prepare($sql);
