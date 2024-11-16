@@ -12,11 +12,19 @@ class AuthorApiController {
     }
 
     function getAll($req, $res) {
+        $gender = null;
+        if(isset($req->query->GeneroDestacado))
+            $gender = $req->query->GeneroDestacado;
+        
         $orderBy = false;
         if(isset($req->query->orderBy))
             $orderBy = $req->query->orderBy;
 
-        $authors = $this->model->getAuthors($orderBy);
+        $sort = null;
+        if (isset($req->query->sort)) 
+            $sort = $req->query->sort;
+
+        $authors = $this->model->getAuthors($gender, $orderBy, $sort);
         return $this->view->response($authors);
     }
 

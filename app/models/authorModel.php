@@ -3,8 +3,12 @@ require_once 'model.php';
 
 class AuthorModel extends model{
 
-    public function getAuthors($orderBy = false) {
+    public function getAuthors($gender = null, $orderBy = false, $sort = null) {
         $sql = 'SELECT * FROM autores';
+       
+        if($gender != null) {
+            $sql .= " WHERE GeneroDestacado = $gender";
+        }
 
         if($orderBy) {
             switch($orderBy) {
@@ -14,6 +18,9 @@ class AuthorModel extends model{
                 case 'FechaNacimiento':
                     $sql .= ' ORDER BY FechaNacimiento';
                     break;
+            }
+            if ($sort != null) {
+                $sql .= " $sort";
             }
         }
 
