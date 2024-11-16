@@ -2,15 +2,6 @@
 require_once 'model.php';
 
 class bookModel extends model{
-
-    public function getBooksByAuthor($id) {
-        $query = $this->db->prepare('SELECT libros.*, autores.Nombre AS AutorNombre FROM libros JOIN autores ON libros.Autor = autores.id WHERE autores.id = ?');
-        $query->execute([$id]);
-    
-        $books = $query->fetchAll(PDO::FETCH_OBJ);
-    
-        return $books;
-    }
  
     public function getBooks($orderBy = false, $sort = null, $autor = null, $limit = null, $offset = 0) {
         $sql = 'SELECT libros.*, autores.Nombre AS AutorNombre FROM libros JOIN autores ON libros.Autor = autores.id';
@@ -52,15 +43,6 @@ class bookModel extends model{
         $books = $query->fetchAll(PDO::FETCH_OBJ); 
     
         return $books;
-    }
-
-    public function getInfo($id) {    
-        $query = $this->db->prepare('SELECT libros.*, autores.Nombre FROM libros JOIN autores ON libros.Autor = autores.id WHERE libros.id = ?');
-        $query->execute([$id]);   
-    
-        $info = $query->fetch(PDO::FETCH_OBJ);
-    
-        return $info;
     }
 
     public function getBook($id) {    
